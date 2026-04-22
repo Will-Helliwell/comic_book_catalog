@@ -1,1 +1,1 @@
-# comic_book_catalog
+# Comic Book Catalog
