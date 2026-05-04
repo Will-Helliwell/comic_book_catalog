@@ -1,7 +1,7 @@
 // Run from the project root: mongosh scripts/setupSchema.js
 // Drops the existing database and recreates it with validators.
 
-load('scripts/config.js');
+load("scripts/config.js");
 
 db = db.getSiblingDB(config.dbName);
 db.dropDatabase();
@@ -10,14 +10,14 @@ db = db.getSiblingDB(config.dbName);
 // ---------------------------------------------------------------------------
 // users
 // ---------------------------------------------------------------------------
-db.createCollection('users', {
+db.createCollection("users", {
   validator: {
     $jsonSchema: {
-      bsonType: 'object',
-      required: ['firstName', 'lastName'],
+      bsonType: "object",
+      required: ["firstName", "lastName"],
       properties: {
-        firstName: { bsonType: 'string' },
-        lastName:  { bsonType: 'string' },
+        firstName: { bsonType: "string" },
+        lastName: { bsonType: "string" },
       },
     },
   },
@@ -28,20 +28,20 @@ db.createCollection('users', {
 // Note: `year` is stored as an integer (e.g. 1963) — MongoDB has no
 // year-only date type.
 // ---------------------------------------------------------------------------
-db.createCollection('books', {
+db.createCollection("books", {
   validator: {
     $jsonSchema: {
-      bsonType: 'object',
-      required: ['title'],
+      bsonType: "object",
+      required: ["title"],
       properties: {
-        title:       { bsonType: 'string' },
-        year:        { bsonType: 'int' },
-        description: { bsonType: 'string' },
+        title: { bsonType: "string" },
+        year: { bsonType: "int" },
+        description: { bsonType: "string" },
         coverArt: {
-          bsonType: 'object',
+          bsonType: "object",
           properties: {
-            source: { bsonType: 'string' },
-            alt:    { bsonType: 'string' },
+            source: { bsonType: "string" },
+            alt: { bsonType: "string" },
           },
         },
       },
@@ -53,17 +53,17 @@ db.createCollection('books', {
 // usersBooks
 // Note: `grade` and `pricePaid` are optional (e.g. for "wanted" books).
 // ---------------------------------------------------------------------------
-db.createCollection('usersBooks', {
+db.createCollection("usersBooks", {
   validator: {
     $jsonSchema: {
-      bsonType: 'object',
-      required: ['userId', 'bookId', 'status'],
+      bsonType: "object",
+      required: ["userId", "bookId", "status"],
       properties: {
-        userId:    { bsonType: 'objectId' },
-        bookId:    { bsonType: 'objectId' },
-        grade:     { bsonType: 'double' },
-        status:    { bsonType: 'string', enum: ['owned', 'wanted'] },
-        pricePaid: { bsonType: 'double' },
+        userId: { bsonType: "objectId" },
+        bookId: { bsonType: "objectId" },
+        grade: { bsonType: "double" },
+        status: { bsonType: "string", enum: ["owned", "wanted"] },
+        pricePaid: { bsonType: "double" },
       },
     },
   },
@@ -73,25 +73,25 @@ db.createCollection('usersBooks', {
 // booksPricesAnalyses
 // `prices` is an array of grade/price-range entries.
 // ---------------------------------------------------------------------------
-db.createCollection('booksPricesAnalyses', {
+db.createCollection("booksPricesAnalyses", {
   validator: {
     $jsonSchema: {
-      bsonType: 'object',
-      required: ['bookId', 'runDate', 'sampleCount', 'confidence', 'prices'],
+      bsonType: "object",
+      required: ["bookId", "runDate", "sampleCount", "confidence", "prices"],
       properties: {
-        bookId:      { bsonType: 'objectId' },
-        runDate:     { bsonType: 'date' },
-        sampleCount: { bsonType: 'int' },
-        confidence:  { bsonType: 'double' },
+        bookId: { bsonType: "objectId" },
+        runDate: { bsonType: "date" },
+        sampleCount: { bsonType: "int" },
+        confidence: { bsonType: "double" },
         prices: {
-          bsonType: 'array',
+          bsonType: "array",
           items: {
-            bsonType: 'object',
-            required: ['grade', 'lowPrice', 'highPrice'],
+            bsonType: "object",
+            required: ["grade", "lowPrice", "highPrice"],
             properties: {
-              grade:     { bsonType: 'double' },
-              lowPrice:  { bsonType: 'double' },
-              highPrice: { bsonType: 'double' },
+              grade: { bsonType: "double" },
+              lowPrice: { bsonType: "double" },
+              highPrice: { bsonType: "double" },
             },
           },
         },
@@ -100,4 +100,4 @@ db.createCollection('booksPricesAnalyses', {
   },
 });
 
-print('Schema created successfully.');
+print("Schema created successfully.");
