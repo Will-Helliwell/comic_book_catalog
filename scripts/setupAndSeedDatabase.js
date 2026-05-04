@@ -1,6 +1,5 @@
-// Run from the project root: mongosh scripts/setupAndSeedDatabase.js
-// Drops the database, recreates the schema, then seeds it with example data.
-// config.js is loaded transitively by each script below.
+import { setup } from './setupSchema.js';
+import { seed } from './seedDatabase.js';
 
-load("scripts/setupSchema.js");
-load("scripts/seedDatabase.js");
+await setup();
+await seed();

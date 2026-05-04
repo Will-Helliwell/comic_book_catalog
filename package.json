@@ -1,0 +1,14 @@
+{
+  "name": "comic-book-catalog",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "setupSchema": "node scripts/setupSchema.js",
+    "seedDatabase": "node scripts/seedDatabase.js",
+    "setupAndSeedDatabase": "node scripts/setupAndSeedDatabase.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mongodb": "^6.0.0"
+  }
+}

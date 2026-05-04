@@ -3,26 +3,38 @@
 ## Prerequisites
 
 - [MongoDB](https://www.mongodb.com/docs/manual/installation/) installed and running locally
-- `mongosh` available on your PATH
+- [Node.js](https://nodejs.org/) (v18 or later)
+
+## Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Copy the environment file and adjust values if needed:
+
+```bash
+cp .env.example .env
+```
 
 ## Database scripts
-
-All scripts must be run from the **project root**.
 
 ### Set up schema
 
 Drops the existing database and recreates all collections with validators:
 
 ```bash
-mongosh scripts/setupSchema.js
+npm run setupSchema
 ```
 
 ### Seed database
 
-Inserts example data into the existing database (run after `setupSchema.js`):
+Inserts example data into the existing database (run after `setupSchema`):
 
 ```bash
-mongosh scripts/seedDatabase.js
+npm run seedDatabase
 ```
 
 ### Set up and seed
@@ -30,7 +42,7 @@ mongosh scripts/seedDatabase.js
 Drops the database, recreates the schema, and seeds it in one step:
 
 ```bash
-mongosh scripts/setupAndSeedDatabase.js
+npm run setupAndSeedDatabase
 ```
 
 ## Database schema

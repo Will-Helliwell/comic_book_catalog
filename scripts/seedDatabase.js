@@ -1,128 +1,119 @@
-// Run from the project root: mongosh scripts/seedDatabase.js
-// Seeds the existing comicBookCatalog database. Run setupSchema.js first.
+import { fileURLToPath } from 'url';
+import { Double } from 'mongodb';
+import { withDb } from './lib/db.js';
 
-load("scripts/config.js");
+/**
+ * Inserts example users, books, user-book relationships, and price analyses
+ * into the existing database. Run after {@link setup} to ensure collections and
+ * validators are in place.
+ * @returns {Promise<void>}
+ */
+export async function seed() {
+  await withDb(async (db) => {
+    // -------------------------------------------------------------------------
+    // users
+    // -------------------------------------------------------------------------
+    const { insertedId: user1Id } = await db.collection('users').insertOne({ firstName: 'John', lastName: 'Smith' });
+    const { insertedId: user2Id } = await db.collection('users').insertOne({ firstName: 'Jane', lastName: 'Doe'   });
 
-const db = db.getSiblingDB(config.dbName);
+    // -------------------------------------------------------------------------
+    // books
+    // -------------------------------------------------------------------------
+    const { insertedId: spiderMan1Id } = await db.collection('books').insertOne({
+      title:       'The Amazing Spider-Man #1',
+      year:        1963,
+      description: 'The first solo Spider-Man comic, featuring the Chameleon as the villain.',
+      coverArt:    { source: 'https://example.com/images/asm1.jpg', alt: 'Amazing Spider-Man #1 cover' },
+    });
 
-// ---------------------------------------------------------------------------
-// users
-// ---------------------------------------------------------------------------
-const user1Id = db.users.insertOne({
-  firstName: "John",
-  lastName: "Smith",
-}).insertedId;
-const user2Id = db.users.insertOne({
-  firstName: "Jane",
-  lastName: "Doe",
-}).insertedId;
+    const { insertedId: batman1Id } = await db.collection('books').insertOne({
+      title:       'Batman #1',
+      year:        1940,
+      description: 'The first solo Batman comic, introducing the Joker and Catwoman.',
+      coverArt:    { source: 'https://example.com/images/batman1.jpg', alt: 'Batman #1 cover' },
+    });
 
-// ---------------------------------------------------------------------------
-// books
-// ---------------------------------------------------------------------------
-const spiderMan1Id = db.books.insertOne({
-  title: "The Amazing Spider-Man #1",
-  year: 1963,
-  description:
-    "The first solo Spider-Man comic, featuring the Chameleon as the villain.",
-  coverArt: {
-    source: "https://example.com/images/asm1.jpg",
-    alt: "Amazing Spider-Man #1 cover",
-  },
-}).insertedId;
+    const { insertedId: xMen1Id } = await db.collection('books').insertOne({
+      title:       'X-Men #1',
+      year:        1963,
+      description: 'The debut of the X-Men, featuring Cyclops, Marvel Girl, Beast, Iceman, and Angel.',
+      coverArt:    { source: 'https://example.com/images/xmen1.jpg', alt: 'X-Men #1 cover' },
+    });
 
-const batman1Id = db.books.insertOne({
-  title: "Batman #1",
-  year: 1940,
-  description:
-    "The first solo Batman comic, introducing the Joker and Catwoman.",
-  coverArt: {
-    source: "https://example.com/images/batman1.jpg",
-    alt: "Batman #1 cover",
-  },
-}).insertedId;
+    // -------------------------------------------------------------------------
+    // usersBooks
+    // -------------------------------------------------------------------------
 
-const xMen1Id = db.books.insertOne({
-  title: "X-Men #1",
-  year: 1963,
-  description:
-    "The debut of the X-Men, featuring Cyclops, Marvel Girl, Beast, Iceman, and Angel.",
-  coverArt: {
-    source: "https://example.com/images/xmen1.jpg",
-    alt: "X-Men #1 cover",
-  },
-}).insertedId;
+    // John owns Amazing Spider-Man #1 and X-Men #1; wants Batman #1
+    await db.collection('usersBooks').insertOne({
+      userId:    user1Id,
+      bookId:    spiderMan1Id,
+      grade:     new Double(8.5),
+      status:    'owned',
+      pricePaid: new Double(1500),
+    });
 
-// ---------------------------------------------------------------------------
-// usersBooks
-// ---------------------------------------------------------------------------
+    await db.collection('usersBooks').insertOne({
+      userId:    user1Id,
+      bookId:    xMen1Id,
+      grade:     new Double(7.0),
+      status:    'owned',
+      pricePaid: new Double(800),
+    });
 
-// John owns Amazing Spider-Man #1 and X-Men #1; wants Batman #1
-db.usersBooks.insertOne({
-  userId: user1Id,
-  bookId: spiderMan1Id,
-  grade: Double(8.5),
-  status: "owned",
-  pricePaid: Double(1500),
-});
+    await db.collection('usersBooks').insertOne({
+      userId: user1Id,
+      bookId: batman1Id,
+      status: 'wanted',
+    });
 
-db.usersBooks.insertOne({
-  userId: user1Id,
-  bookId: xMen1Id,
-  grade: Double(7.0),
-  status: "owned",
-  pricePaid: Double(800),
-});
+    // Jane owns Batman #1; wants Amazing Spider-Man #1
+    await db.collection('usersBooks').insertOne({
+      userId:    user2Id,
+      bookId:    batman1Id,
+      grade:     new Double(6.5),
+      status:    'owned',
+      pricePaid: new Double(2200),
+    });
 
-db.usersBooks.insertOne({
-  userId: user1Id,
-  bookId: batman1Id,
-  status: "wanted",
-});
+    await db.collection('usersBooks').insertOne({
+      userId: user2Id,
+      bookId: spiderMan1Id,
+      status: 'wanted',
+    });
 
-// Jane owns Batman #1; wants Amazing Spider-Man #1
-db.usersBooks.insertOne({
-  userId: user2Id,
-  bookId: batman1Id,
-  grade: Double(6.5),
-  status: "owned",
-  pricePaid: Double(2200),
-});
+    // -------------------------------------------------------------------------
+    // booksPricesAnalyses
+    // -------------------------------------------------------------------------
+    await db.collection('booksPricesAnalyses').insertOne({
+      bookId:      spiderMan1Id,
+      runDate:     new Date('2024-03-01'),
+      sampleCount: 42,
+      confidence:  new Double(0.9),
+      prices: [
+        { grade: new Double(4.0), lowPrice: new Double(280),  highPrice: new Double(340)  },
+        { grade: new Double(6.0), lowPrice: new Double(550),  highPrice: new Double(650)  },
+        { grade: new Double(8.0), lowPrice: new Double(1100), highPrice: new Double(1300) },
+        { grade: new Double(9.0), lowPrice: new Double(2400), highPrice: new Double(2800) },
+        { grade: new Double(9.8), lowPrice: new Double(8500), highPrice: new Double(9500) },
+      ],
+    });
 
-db.usersBooks.insertOne({
-  userId: user2Id,
-  bookId: spiderMan1Id,
-  status: "wanted",
-});
+    await db.collection('booksPricesAnalyses').insertOne({
+      bookId:      batman1Id,
+      runDate:     new Date('2024-03-01'),
+      sampleCount: 28,
+      confidence:  new Double(0.8),
+      prices: [
+        { grade: new Double(4.0), lowPrice: new Double(900),   highPrice: new Double(1100)  },
+        { grade: new Double(6.0), lowPrice: new Double(1800),  highPrice: new Double(2200)  },
+        { grade: new Double(8.0), lowPrice: new Double(5000),  highPrice: new Double(6000)  },
+        { grade: new Double(9.0), lowPrice: new Double(12000), highPrice: new Double(15000) },
+      ],
+    });
+  });
 
-// ---------------------------------------------------------------------------
-// booksPricesAnalyses
-// ---------------------------------------------------------------------------
-db.booksPricesAnalyses.insertOne({
-  bookId: spiderMan1Id,
-  runDate: new Date("2024-03-01"),
-  sampleCount: 42,
-  confidence: Double(0.9),
-  prices: [
-    { grade: Double(4.0), lowPrice: Double(280), highPrice: Double(340) },
-    { grade: Double(6.0), lowPrice: Double(550), highPrice: Double(650) },
-    { grade: Double(8.0), lowPrice: Double(1100), highPrice: Double(1300) },
-    { grade: Double(9.0), lowPrice: Double(2400), highPrice: Double(2800) },
-    { grade: Double(9.8), lowPrice: Double(8500), highPrice: Double(9500) },
-  ],
-});
+  console.log('Database seeded successfully.');
+}
 
-db.booksPricesAnalyses.insertOne({
-  bookId: batman1Id,
-  runDate: new Date("2024-03-01"),
-  sampleCount: 28,
-  confidence: Double(0.8),
-  prices: [
-    { grade: Double(4.0), lowPrice: Double(900), highPrice: Double(1100) },
-    { grade: Double(6.0), lowPrice: Double(1800), highPrice: Double(2200) },
-    { grade: Double(8.0), lowPrice: Double(5000), highPrice: Double(6000) },
-    { grade: Double(9.0), lowPrice: Double(12000), highPrice: Double(15000) },
-  ],
-});
-
-print("Database seeded successfully.");
+if (process.argv[1] === fileURLToPath(import.meta.url)) await seed();
