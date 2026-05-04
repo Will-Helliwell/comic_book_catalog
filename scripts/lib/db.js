@@ -1,9 +1,10 @@
-import { MongoClient } from 'mongodb';
-import 'dotenv/config';
+import { MongoClient } from "mongodb";
+import "dotenv/config";
 
 /**
  * Connects to MongoDB, passes the database instance to the provided function,
  * then closes the connection — even if an error is thrown.
+ * Defining this pattern once ensures that all functions that interact with the database close their connections properly, preventing resource leaks and ensuring consistent error handling.
  *
  * @param {(db: import('mongodb').Db) => Promise<void>} fn - Async function to run with the connected database.
  * @returns {Promise<void>}
