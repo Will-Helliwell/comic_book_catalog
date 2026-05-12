@@ -16,7 +16,12 @@ export const booksValidator = {
     required: ['title'],
     properties: {
       title:       { bsonType: 'string' },
+      volume:      { bsonType: 'int' },
+      issue:       { bsonType: 'int' },
+      variant:     { bsonType: 'string' },
       year:        { bsonType: 'int' },
+      coverGrade:  { bsonType: 'double' },
+      expense:     { bsonType: 'double' },
       description: { bsonType: 'string' },
       coverArt: {
         bsonType: 'object',
@@ -58,11 +63,11 @@ export const booksPricesAnalysesValidator = {
         bsonType: 'array',
         items: {
           bsonType: 'object',
-          required: ['grade', 'lowPrice', 'highPrice'],
+          required: ['grade', 'rawPrice', 'slabPrice'],
           properties: {
             grade:     { bsonType: 'double' },
-            lowPrice:  { bsonType: 'double' },
-            highPrice: { bsonType: 'double' },
+            rawPrice:  { bsonType: 'double' },
+            slabPrice: { bsonType: 'double' },
           },
         },
       },

@@ -5,9 +5,11 @@
   "scripts": {
     "setupSchema": "node scripts/setupSchema.js",
     "seedDatabase": "node scripts/seedDatabase.js",
-    "setupAndSeedDatabase": "node scripts/setupAndSeedDatabase.js"
+    "setupAndSeedDatabase": "node scripts/setupAndSeedDatabase.js",
+    "scrape": "node scraper/index.js"
   },
   "dependencies": {
+    "cheerio": "^1.0.0",
     "dotenv": "^16.0.0",
     "mongodb": "^6.0.0"
   }

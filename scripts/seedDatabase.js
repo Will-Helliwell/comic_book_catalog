@@ -20,22 +20,37 @@ export async function seed() {
     // books
     // -------------------------------------------------------------------------
     const { insertedId: spiderMan1Id } = await db.collection('books').insertOne({
-      title:       'The Amazing Spider-Man #1',
+      title:       'The Amazing Spider-Man',
+      volume:      1,
+      issue:       1,
+      variant:     'A',
       year:        1963,
+      coverGrade:  new Double(9.4),
+      expense:     new Double(1500),
       description: 'The first solo Spider-Man comic, featuring the Chameleon as the villain.',
       coverArt:    { source: 'https://example.com/images/asm1.jpg', alt: 'Amazing Spider-Man #1 cover' },
     });
 
     const { insertedId: batman1Id } = await db.collection('books').insertOne({
-      title:       'Batman #1',
+      title:       'Batman',
+      volume:      1,
+      issue:       1,
+      variant:     'A',
       year:        1940,
+      coverGrade:  new Double(6.0),
+      expense:     new Double(800),
       description: 'The first solo Batman comic, introducing the Joker and Catwoman.',
       coverArt:    { source: 'https://example.com/images/batman1.jpg', alt: 'Batman #1 cover' },
     });
 
     const { insertedId: xMen1Id } = await db.collection('books').insertOne({
-      title:       'X-Men #1',
+      title:       'X-Men',
+      volume:      1,
+      issue:       1,
+      variant:     'A',
       year:        1963,
+      coverGrade:  new Double(8.0),
+      expense:     new Double(2500),
       description: 'The debut of the X-Men, featuring Cyclops, Marvel Girl, Beast, Iceman, and Angel.',
       coverArt:    { source: 'https://example.com/images/xmen1.jpg', alt: 'X-Men #1 cover' },
     });
@@ -91,11 +106,11 @@ export async function seed() {
       sampleCount: 42,
       confidence:  new Double(0.9),
       prices: [
-        { grade: new Double(4.0), lowPrice: new Double(280),  highPrice: new Double(340)  },
-        { grade: new Double(6.0), lowPrice: new Double(550),  highPrice: new Double(650)  },
-        { grade: new Double(8.0), lowPrice: new Double(1100), highPrice: new Double(1300) },
-        { grade: new Double(9.0), lowPrice: new Double(2400), highPrice: new Double(2800) },
-        { grade: new Double(9.8), lowPrice: new Double(8500), highPrice: new Double(9500) },
+        { grade: new Double(4.0), rawPrice: new Double(280),  slabPrice: new Double(340)  },
+        { grade: new Double(6.0), rawPrice: new Double(550),  slabPrice: new Double(650)  },
+        { grade: new Double(8.0), rawPrice: new Double(1100), slabPrice: new Double(1300) },
+        { grade: new Double(9.0), rawPrice: new Double(2400), slabPrice: new Double(2800) },
+        { grade: new Double(9.8), rawPrice: new Double(8500), slabPrice: new Double(9500) },
       ],
     });
 
@@ -105,10 +120,10 @@ export async function seed() {
       sampleCount: 28,
       confidence:  new Double(0.8),
       prices: [
-        { grade: new Double(4.0), lowPrice: new Double(900),   highPrice: new Double(1100)  },
-        { grade: new Double(6.0), lowPrice: new Double(1800),  highPrice: new Double(2200)  },
-        { grade: new Double(8.0), lowPrice: new Double(5000),  highPrice: new Double(6000)  },
-        { grade: new Double(9.0), lowPrice: new Double(12000), highPrice: new Double(15000) },
+        { grade: new Double(4.0), rawPrice: new Double(900),   slabPrice: new Double(1100)  },
+        { grade: new Double(6.0), rawPrice: new Double(1800),  slabPrice: new Double(2200)  },
+        { grade: new Double(8.0), rawPrice: new Double(5000),  slabPrice: new Double(6000)  },
+        { grade: new Double(9.0), rawPrice: new Double(12000), slabPrice: new Double(15000) },
       ],
     });
   });
