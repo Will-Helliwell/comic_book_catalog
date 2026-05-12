@@ -1,10 +1,10 @@
 export const usersValidator = {
   $jsonSchema: {
-    bsonType: 'object',
-    required: ['firstName', 'lastName'],
+    bsonType: "object",
+    required: ["firstName", "lastName"],
     properties: {
-      firstName: { bsonType: 'string' },
-      lastName:  { bsonType: 'string' },
+      firstName: { bsonType: "string" },
+      lastName: { bsonType: "string" },
     },
   },
 };
@@ -12,22 +12,22 @@ export const usersValidator = {
 // Note: `year` is stored as an integer (e.g. 1963) — MongoDB has no year-only date type.
 export const booksValidator = {
   $jsonSchema: {
-    bsonType: 'object',
-    required: ['title'],
+    bsonType: "object",
+    required: ["title"],
     properties: {
-      title:       { bsonType: 'string' },
-      volume:      { bsonType: 'int' },
-      issue:       { bsonType: 'int' },
-      variant:     { bsonType: 'string' },
-      year:        { bsonType: 'int' },
-      coverGrade:  { bsonType: 'double' },
-      expense:     { bsonType: 'double' },
-      description: { bsonType: 'string' },
+      title: { bsonType: "string" },
+      volume: { bsonType: "int" },
+      issue: { bsonType: "int" },
+      variant: { bsonType: "string" },
+      year: { bsonType: "int" },
+      coverGrade: { bsonType: "double" },
+      expense: { bsonType: "double" },
+      description: { bsonType: "string" },
       coverArt: {
-        bsonType: 'object',
+        bsonType: "object",
         properties: {
-          source: { bsonType: 'string' },
-          alt:    { bsonType: 'string' },
+          source: { bsonType: "string" },
+          alt: { bsonType: "string" },
         },
       },
     },
@@ -37,14 +37,14 @@ export const booksValidator = {
 // Note: `grade` and `pricePaid` are optional (e.g. for "wanted" books).
 export const usersBooksValidator = {
   $jsonSchema: {
-    bsonType: 'object',
-    required: ['userId', 'bookId', 'status'],
+    bsonType: "object",
+    required: ["userId", "bookId", "status"],
     properties: {
-      userId:    { bsonType: 'objectId' },
-      bookId:    { bsonType: 'objectId' },
-      grade:     { bsonType: 'double' },
-      status:    { bsonType: 'string', enum: ['owned', 'wanted'] },
-      pricePaid: { bsonType: 'double' },
+      userId: { bsonType: "objectId" },
+      bookId: { bsonType: "objectId" },
+      grade: { bsonType: "double" },
+      status: { bsonType: "string", enum: ["owned", "wanted"] },
+      pricePaid: { bsonType: "double" },
     },
   },
 };
@@ -52,22 +52,22 @@ export const usersBooksValidator = {
 // `prices` is an array of grade/price-range entries.
 export const booksPricesAnalysesValidator = {
   $jsonSchema: {
-    bsonType: 'object',
-    required: ['bookId', 'runDate', 'sampleCount', 'confidence', 'prices'],
+    bsonType: "object",
+    required: ["bookId", "runDate", "sampleCount", "confidence", "prices"],
     properties: {
-      bookId:      { bsonType: 'objectId' },
-      runDate:     { bsonType: 'date' },
-      sampleCount: { bsonType: 'int' },
-      confidence:  { bsonType: 'double' },
+      bookId: { bsonType: "objectId" },
+      runDate: { bsonType: "date" },
+      sampleCount: { bsonType: "int" },
+      confidence: { bsonType: "double" },
       prices: {
-        bsonType: 'array',
+        bsonType: "array",
         items: {
-          bsonType: 'object',
-          required: ['grade', 'rawPrice', 'slabPrice'],
+          bsonType: "object",
+          required: ["grade", "rawPrice", "slabPrice"],
           properties: {
-            grade:     { bsonType: 'double' },
-            rawPrice:  { bsonType: 'double' },
-            slabPrice: { bsonType: 'double' },
+            grade: { bsonType: "double" },
+            rawPrice: { bsonType: "double" },
+            slabPrice: { bsonType: "double" },
           },
         },
       },

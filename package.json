@@ -6,11 +6,20 @@
     "setupSchema": "node scripts/setupSchema.js",
     "seedDatabase": "node scripts/seedDatabase.js",
     "setupAndSeedDatabase": "node scripts/setupAndSeedDatabase.js",
-    "scrape": "node scraper/index.js"
+    "scrape": "node scraper/index.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
     "dotenv": "^16.0.0",
     "mongodb": "^6.0.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.8.3"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
   }
 }
