@@ -45,6 +45,19 @@ Drops the database, recreates the schema, and seeds it in one step:
 npm run setupAndSeedDatabase
 ```
 
+## Scraper
+
+Scrapes all comic records from the source site and writes two NDJSON files to `data/` (gitignored):
+
+- `data/books.ndjson` — one book record per line
+- `data/booksPricesAnalyses.ndjson` — one price analysis record per line, keyed by `bookRef`
+
+```bash
+npm run scrape
+```
+
+These files are the intermediate format for bulk database seeding. The `data/` directory is created automatically if it does not exist.
+
 ## Database schema
 
 Database name: `comicBookCatalog`
